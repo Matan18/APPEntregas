@@ -1,8 +1,10 @@
 import supertest from "supertest";
 import app from "../src/app";
+import { response } from "express";
 
 let storeId = ""
 let driverId = ""
+let driverId2=""
 const data = {
     Loja: {
         email: "loja@test.com",
@@ -59,9 +61,18 @@ describe("Store", () => {
             .send({ ...data.Loja, ...data.Driver })
             .set('Accept', 'application/json')
             .expect((response) => {
-                expect(response.body.loja).toHaveProperty('id');
+                expect(response.body).toMatchObject({
+                    loja: {
+                        ...data.Loja,
+                        id:response.body.loja.id
+                    },
+                    driver:{
+                        ...data.Driver,
+                        id:response.body.driver.id
+                    }
+                })
+                driverId=response.body.driver.id
                 storeId = response.body.loja.id;
-                expect(response.body.driver).toHaveProperty('id')
             })
         done()
     })
@@ -71,10 +82,12 @@ describe("Store", () => {
             .send({ name: data.Loja.name, password: data.Loja.password })
             .set('Accept', 'application/json')
             .expect((response) => {
-                expect(response.body.loja).toHaveProperty('id');
-                expect(response.body.loja).toHaveProperty('email');
-                expect(response.body.loja).toHaveProperty('name');
-                expect(response.body.loja).toHaveProperty('password');
+                expect(response.body.loja).toMatchObject({
+                    id: storeId,
+                    email:data.Loja.email,
+                    name:data.Loja.name,
+                    password:data.Loja.password
+                })
             })
         done();
     })
@@ -86,11 +99,12 @@ describe('Driver', () => {
             .set('Accept', 'application/json')
             .send({ name: data.Driver.user, password: data.Driver.userPassword })
             .expect((response) => {
-                expect(response.body.driver).toHaveProperty('id');
-
-                expect(response.body.driver).toHaveProperty('name');
-                expect(response.body.driver).toHaveProperty('store');
-                expect(response.body.driver).toHaveProperty('password');
+                expect(response.body.driver).toMatchObject({
+                    id:driverId,
+                    name: data.Driver.user,
+                    storeId,
+                    password:data.Driver.userPassword
+                })
             })
         done();
     })
@@ -100,12 +114,29 @@ describe('Driver', () => {
             .set("Authorization", storeId)
             .send({ name: "newDriver", password: "newpass" })
             .expect((response) => {
-                expect(response.body.driver).toHaveProperty('id');
-                expect(response.body.driver).toHaveProperty('name');
-                expect(response.body.driver).toHaveProperty('store');
-                expect(response.body.driver).toHaveProperty('password');
+                expect(response.body.driver).toMatchObject({
+                    id:response.body.driver.id,
+                    name: "newDriver",
+                    password:"newpass"
+                });
+
             })
         done();
+    })
+    it("Should return a list f Drivers from a Store", async (done)=>{
+        await supertest(app)
+            .get('/alldrivers')
+            .set("Authorization", storeId)
+            .expect((response)=>{
+                expect(response.body.drivers).toMatchObject([{
+                    id:driverId,
+                    ...data.Driver
+                },{
+                    id:driverId2,
+                    name:"newDriver",
+                    password:"newpass"
+                }])
+            })
     })
 })
 describe('Deliver', () => {
@@ -115,11 +146,13 @@ describe('Deliver', () => {
             .set("Authorization", storeId)
             .send(data.Deliver)
             .expect((response) => {
-                expect(response.body.deliver).toHaveProperty('id');
-                expect(response.body.deliver).toHaveProperty('key');
-                expect(response.body.deliver).toHaveProperty('amount');
-                expect(response.body.deliver).toHaveProperty('store');
-                expect(response.body.deliver).toHaveProperty('packages');
+                expect(response.body.deliver).toMatchObject({
+                    id:response.body.deliver.id,
+                    key:data.Deliver.key,
+                    amount:data.Deliver.packages.length,
+                    storeId,
+                    packages:data.Deliver.packages
+                });
             })
         done();
     })
@@ -129,11 +162,10 @@ describe('Deliver', () => {
             .set("Authorization", storeId)
             .send({ key: data.Deliver.key })
             .expect((response) => {
-                expect(response.body.deliver).toHaveProperty('id');
-                expect(response.body.deliver).toHaveProperty('key');
-                expect(response.body.deliver).toHaveProperty('amount');
-                expect(response.body.deliver).toHaveProperty('store');
-                expect(response.body.deliver).toHaveProperty('packages');
+                expect(response.body.deliver).toMatchObject({
+                    id:response.body.deliver.id,
+                    ...data.Deliver
+                });
             })
         done();
     })
@@ -143,11 +175,11 @@ describe('Deliver', () => {
             .set("Authorization", driverId)
             .query({ key: data.Deliver.key })
             .expect((response) => {
-                expect(response.body.deliver).toHaveProperty('id');
-                expect(response.body.deliver).toHaveProperty('key');
-                expect(response.body.deliver).toHaveProperty('amount');
-                expect(response.body.deliver).toHaveProperty('store');
-                expect(response.body.deliver).toHaveProperty('packages');
+                expect(response.body.deliver).toMatchObject({
+                    id: response.body.deliver.ir,
+                    ...data.Deliver,
+                    storeId
+                });
             })
         done();
     })

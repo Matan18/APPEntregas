@@ -14,13 +14,13 @@ export class Deliver{
     @Column()
     amount:number;
 
-    @ManyToOne(type => Store, store=>store.delivers)
-    store:Store;
+    @ManyToOne(type => Store, store=>store.deliversId)
+    storeId:Store;
 
-    @OneToMany(type=> Package, pack=>pack.deliver)
-    packages:Package[]
+    @OneToMany(type=> Package, pack=>pack.deliverId)
+    packagesId:Package[]
 
-    @ManyToOne(type=>Driver, driver=>driver.delivers)
-    driver:Driver;
+    @ManyToOne(type=>Driver, driver=>driver.deliversId)
+    driverId:Driver;
 
 }

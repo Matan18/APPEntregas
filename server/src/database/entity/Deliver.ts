@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany, Unique } from "typeorm";
 import { Store } from "./Store";
 import { Driver } from "./Driver";
 import { Package } from "./Package";
@@ -14,7 +14,7 @@ export class Deliver{
     @Column()
     amount:number;
 
-    @ManyToOne(type => Store, store=>store.deliversId)
+    @ManyToOne(type => Store, store=>store.deliversId, {cascade:true})
     storeId:Store;
 
     @OneToMany(type=> Package, pack=>pack.deliverId)

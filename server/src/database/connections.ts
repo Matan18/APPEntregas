@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import {createConnection} from "typeorm";
 
-const connect = createConnection();
+const connect = createConnection('default');
 
 export default connect;

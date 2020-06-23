@@ -16,9 +16,9 @@ export class Store{
     @Column()
     password:string;
 
-    @OneToMany(type=>Driver, driver=>driver.storeId)
-    driversId:Driver[];
+    @OneToMany(type=>Driver, driver=>driver.store)
+    drivers:Driver[];
     
-    @OneToMany(type=>Deliver, deliver=>deliver.storeId)
-    deliversId:Deliver[];
+    @OneToMany(type=>Deliver, deliver=>deliver.store)
+    delivers:Deliver[];
 }

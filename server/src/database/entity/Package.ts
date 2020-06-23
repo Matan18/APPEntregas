@@ -15,7 +15,7 @@ export class Package{
     @Column()
     longitude:number;
 
-    @ManyToOne(type=> Deliver, deliver=>deliver.packagesId, {cascade:true})
-    deliverId:Deliver
+    @ManyToOne(type=> Deliver, deliver=>deliver.packages, {cascade:true})
+    deliver:Deliver
 
 }

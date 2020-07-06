@@ -1,36 +1,41 @@
 {
-   "name": "server",
-   "version": "0.0.1",
-   "description": "Awesome project developed with TypeORM.",
-   "devDependencies": {
-      "@types/express": "^4.17.6",
-      "@types/jest": "^26.0.0",
-      "@types/node": "^8.0.29",
-      "@types/supertest": "^2.0.9",
-      "@types/uuidv4": "^5.0.0",
-      "jest": "^26.0.1",
-      "nodemon": "^2.0.4",
-      "supertest": "^4.0.2",
-      "ts-jest": "^26.1.0",
-      "ts-node": "3.3.0",
-      "ts-node-dev": "^1.0.0-pre.49",
-      "typescript": "^3.9.5"
-   },
-   "dependencies": {
-      "express": "^4.17.1",
-      "reflect-metadata": "^0.1.10",
-      "sqlite3": "^4.0.3",
-      "typeorm": "0.2.25",
-      "uuidv4": "^6.1.0"
-   },
-   "scripts": {
-      "play": "ts-node src/index.ts",
-      "start": "ts-node-dev --inspect --transpileOnly --ignore-watch node_modules src/server.ts",
-      "test": "jest --detectOpenHandles"
-   },
-   "license": "MIT",
-   "jest": {
-      "preset": "ts-jest",
-      "testEnvironment": "node"
-   }
+  "name": "server",
+  "version": "0.0.1",
+  "description": "Awesome project developed with TypeORM.",
+  "devDependencies": {
+    "@types/express": "^4.17.6",
+    "@types/jest": "^26.0.0",
+    "@types/node": "^8.0.29",
+    "@types/supertest": "^2.0.9",
+    "@types/uuidv4": "^5.0.0",
+    "jest": "^26.0.1",
+    "nodemon": "^2.0.4",
+    "supertest": "^4.0.2",
+    "ts-jest": "^26.1.0",
+    "ts-node": "3.3.0",
+    "ts-node-dev": "^1.0.0-pre.50",
+    "typescript": "^3.9.5"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "install": "^0.13.0",
+    "pg": "^8.2.1",
+    "reflect-metadata": "^0.1.10",
+    "sqlite3": "^4.0.3",
+    "typeorm": "0.2.25",
+    "uuidv4": "^6.1.0"
+  },
+  "scripts": {
+    "play": "ts-node src/index.ts",
+    "start": "ts-node-dev --inspect --transpileOnly --ignore-watch node_modules src/server.ts",
+    "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js",
+    "test": "NODE_ENV=postgres.test jest --detectOpenHandles",
+    "typeorm:postgres": "NODE_ENV=postgres ts-node-dev ./node_modules/typeorm/cli.js",
+    "typeorm:postgres:test": "NODE_ENV=postgres.test ts-node-dev ./node_modules/typeorm/cli.js"
+  },
+  "license": "MIT",
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node"
+  }
 }

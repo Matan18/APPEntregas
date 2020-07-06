@@ -1,6 +1,17 @@
 import "reflect-metadata";
-import {createConnection} from "typeorm";
+import { createConnection } from "typeorm";
 
-const connect = createConnection('default');
+let dbName = ''
+
+switch (process.env.NODE_ENV) {
+  case 'postgres.test':
+    dbName = 'pgTest';
+    break;
+  default:
+    dbName = 'default';
+    break;
+}
+const connect = createConnection(dbName)
+
 
 export default connect;

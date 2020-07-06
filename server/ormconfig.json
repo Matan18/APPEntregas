@@ -1,21 +1,38 @@
-{
-  "name": "default",
-  "type": "sqlite",
-  "database": "src/database/db/database.sqlite",
-  "synchronize": true,
-  "logging": false,
-  "entities": [
-    "src/database/entity/**/*.ts"
-  ],
-  "migrations": [
-    "src/database/migration/**/*.ts"
-  ],
-  "subscribers": [
-    "src/database/subscriber/**/*.ts"
-  ],
-  "cli": {
-    "entitiesDir": "src/database/entity",
-    "migrationsDir": "src/database/migration",
-    "subscribersDir": "src/database/subscriber"
+[
+  {
+    "name":"default",
+    "type": "postgres",
+    "host": "localhost",
+    "port": 5433,
+    "username": "postgres",
+    "password": "docker",
+    "database": "postgres",
+    "entities": [
+      "./src/database/entity/*.ts"
+    ],
+    "migrations": [
+      "./src/database/migrations/*.ts"
+    ],
+    "cli": {
+      "migrationsDir": "./src/database/migrations"
+    }
+  },
+  {
+    "name":"pgTest",
+    "type": "postgres",
+    "host": "localhost",
+    "port": 5433,
+    "username": "postgres",
+    "password": "docker",
+    "database": "entregas_test",
+    "entities": [
+      "./src/database/entity/*.ts"
+    ],
+    "migrations": [
+      "./src/database/migrations/*.ts"
+    ],
+    "cli": {
+      "migrationsDir": "./src/database/migrations"
+    }
   }
-}
+]

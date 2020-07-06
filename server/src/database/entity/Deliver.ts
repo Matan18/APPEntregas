@@ -1,26 +1,32 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany, Unique } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany, Unique, CreateDateColumn, UpdateDateColumn } from "typeorm";
 import { Store } from "./Store";
 import { Driver } from "./Driver";
 import { Package } from "./Package";
 
 @Entity()
-export class Deliver{
-    @PrimaryGeneratedColumn()
-    id:number;
+export class Deliver {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    key:string;
+  @Column()
+  key: string;
 
-    @Column()
-    amount:number;
+  @Column()
+  amount: number;
 
-    @ManyToOne(type => Store, store=>store.delivers, {cascade:true})
-    store:Store;
+  @ManyToOne(type => Store, store => store.delivers, { cascade: true })
+  store: Store;
 
-    @OneToMany(type=> Package, pack=>pack.deliver)
-    packages:Package[]
+  @OneToMany(type => Package, pack => pack.deliver)
+  packages: Package[]
 
-    @ManyToOne(type=>Driver, driver=>driver.delivers)
-    driver:Driver;
+  @ManyToOne(type => Driver, driver => driver.delivers)
+  driver: Driver;
+
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
 
 }

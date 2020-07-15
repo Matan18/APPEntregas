@@ -1,8 +1,6 @@
 import React, { createContext, useState } from 'react';
 
-interface contextType {
-  value: 'store' | 'driver' | null;
-}
+type contextType = 'store' | 'driver' | null;
 
 interface AuthContextData {
   signed: boolean;

@@ -26,6 +26,6 @@ app.get('/alldrivers', driverController.index);
 app.post('/newdeliver', deliverControler.create);
 app.get('/getdeliver/:key', deliverControler.searchParams);
 app.get('/getdeliver', deliverControler.searchQuery);
-app.get('/alldelivers', deliverControler.create);
+app.get('/alldelivers', deliverControler.index);
 
 export default app;

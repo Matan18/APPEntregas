@@ -1,5 +1,5 @@
 import supertest from "supertest";
-import app from "../src/appWithRepositories";
+import app from "../src/control";
 
 let storeId = ""
 let driverId = ""
@@ -78,76 +78,76 @@ describe("Store", () => {
             .send({ name: data.Store.name, password: data.Store.password })
             .set('Accept', 'application/json')
             .expect((response) => {
-                expect(response.body).toMatchObject({
-                    id: storeId,
-                    email: data.Store.email,
-                    name: data.Store.name,
-                    password: data.Store.password
-                })
+              expect(response.body.store).toMatchObject({
+                id: storeId,
+                email: data.Store.email,
+                name: data.Store.name,
+                password: data.Store.password
+              })
             })
-        done();
-    })
-})
-describe('Driver', () => {
-    it("Should login a Driver", async (done) => {
-        await supertest(app)
+            done();
+          })
+        })
+        describe('Driver', () => {
+          it("Should login a Driver", async (done) => {
+            await supertest(app)
             .post('/login')
             .set('Accept', 'application/json')
             .send({ name: data.Driver.user, password: data.Driver.userPassword })
             .expect((response) => {
-                expect(response.body).toMatchObject({
-                    id: driverId,
-                    name: data.Driver.user,
-                    password: data.Driver.userPassword
-                })
+              expect(response.body.driver).toMatchObject({
+                id: driverId,
+                name: data.Driver.user,
+                password: data.Driver.userPassword
+              })
             })
-        done();
-    })
-    it("Should save a new Driver", async (done) => {
-        await supertest(app)
+            done();
+          })
+          it("Should save a new Driver", async (done) => {
+            await supertest(app)
             .post('/newdriver')
             .set("Authorization", storeId)
             .send({ name: "newDriver", password: "newpass" })
             .expect((response) => {
-                expect(response.body.driver).toMatchObject({
-                    id: response.body.driver.id,
-                    name: "newDriver",
-                    password: "newpass"
-                });
-
+              expect(response.body.driver).toMatchObject({
+                id: response.body.driver.id,
+                name: "newDriver",
+                password: "newpass"
+              });
+              
             })
-        done();
-    })
-    it("Should return a list of Drivers from a Store", async (done) => {
-        await supertest(app)
+            done();
+          })
+          it("Should return a list of Drivers from a Store", async (done) => {
+            await supertest(app)
             .get('/alldrivers')
             .set("Authorization", storeId)
             .expect((response) => {
-                expect(response.body.drivers[0]).toHaveProperty("id")
-                expect(response.body.drivers[0]).toHaveProperty("name")
-                expect(response.body.drivers[0]).toHaveProperty("password")
-                expect(response.body.drivers[1]).toHaveProperty("id")
-                expect(response.body.drivers[1]).toHaveProperty("name")
-                expect(response.body.drivers[1]).toHaveProperty("password")
+              expect(response.body.drivers[0]).toHaveProperty("id")
+              expect(response.body.drivers[0]).toHaveProperty("name")
+              expect(response.body.drivers[0]).toHaveProperty("password")
+              expect(response.body.drivers[1]).toHaveProperty("id")
+              expect(response.body.drivers[1]).toHaveProperty("name")
+              expect(response.body.drivers[1]).toHaveProperty("password")
             })
-        done()
-    })
-})
-describe('Deliver', () => {
-    it("Should save a deliver", async (done) => {
-        await supertest(app)
+            done()
+          })
+        })
+        describe('Deliver', () => {
+          it("Should save a deliver", async (done) => {
+            await supertest(app)
             .post('/newdeliver')
             .set("Authorization", storeId)
             .send(data.Deliver)
             .expect((response) => {
-                expect(response.body.deliver).toHaveProperty("id")
-                expect(response.body.deliver).toHaveProperty("key")
-                expect(response.body.deliver).toHaveProperty("amount")
-                expect(response.body).toHaveProperty("packages")
-                expect(response.body.packages).toHaveLength(data.Deliver.packages.length)
-                expect(response.body.packages[0]).toHaveProperty('latitude')
-                expect(response.body.packages[0]).toHaveProperty('longitude')
-                expect(response.body.packages[0]).toHaveProperty('product')
+              expect(response.body.deliver).toHaveProperty("id")
+              expect(response.body.deliver).toHaveProperty("key")
+              expect(response.body.deliver).toHaveProperty("amount")
+              expect(response.body).toHaveProperty("packages")
+              expect(response.body.packages).toHaveLength(data.Deliver.packages.length)
+              expect(response.body.packages[0]).toHaveProperty('latitude')
+              expect(response.body.packages[0]).toHaveProperty('longitude')
+              expect(response.body.packages[0]).toHaveProperty('product')
 
             })
         done();

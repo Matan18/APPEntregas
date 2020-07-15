@@ -78,12 +78,11 @@ class DeliverController {
   }
   async create(request: Request, response: Response) {
     const { key, packages } = request.body
-    console.log(packages)
     const storeId = request.headers.authorization;
-
+    
     await connect.then(async (connection) => {
       const storesRepository = connection.getCustomRepository(StoresRepository);
-
+      
       const store = await storesRepository.findOne(storeId);
       if (!store) {
         response.status(404)
@@ -92,7 +91,7 @@ class DeliverController {
       await connection.transaction(async (transactionManager) => {
         const deliversRepository = transactionManager.getCustomRepository(DeliversRepository);
         const packagesRepository = transactionManager.getCustomRepository(PackagesRepository);
-
+        
         const deliver = await deliversRepository.create({ key, amount: packages.length, store: store })
         packages.map(async ({ latitude, longitude, product }: { latitude: number, longitude: number, product: string }) => {
           const pack = await packagesRepository.create({ product, longitude, latitude, deliver })

@@ -29,12 +29,12 @@ class StoreController {
       const store = await storesRepository.login({ name, password });
       if (store) {
         response.status(200)
-        return response.json(store)
+        return response.json({store})
       }
       const driver = await driversRepository.login({ name, password })
       if (driver) {
         response.status(200)
-        return response.json(driver)
+        return response.json({driver})
       }
       response.status(404)
       return response.send({ message: "Login not found" })

@@ -3,16 +3,34 @@ import { View, Button, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { TextInput } from 'react-native-gesture-handler';
 import { AuthContext } from '../../context/Auth';
+import { api } from '../../services/api';
 
 // import { Container } from './styles';
 
 const Login: React.FC = () => {
   const [user, setUser] = useState('');
   const [password, setPassword] = useState('');
+  const store = {
+    name: 'LojaJeste',
+    password: 'asdfghjkl',
+  };
+  const driver = {
+    name: 'Driver2',
+    password: 'driverpass',
+  };
   const navigation = useNavigation();
   const { setType } = useContext(AuthContext);
-  function navigate(): void {
-    navigation.navigate('Signed');
+  function login(data: { name: string; password: string }): void {
+    api.post('/login', data).then(response => {
+      if (response.data.store) {
+        setType('store');
+        api.defaults.headers.Authorization = response.data.store.id;
+      } else if (response.data.driver) {
+        setType('driver');
+        api.defaults.headers.Authorization = response.data.driver.id;
+      }
+      navigation.navigate('Signed');
+    });
   }
   return (
     <View style={styles.container}>
@@ -26,15 +44,13 @@ const Login: React.FC = () => {
       <Button
         title="Store"
         onPress={() => {
-          setType({ value: 'store' });
-          navigate();
+          login(store);
         }}
       />
       <Button
         title="Driver"
         onPress={() => {
-          setType({ value: 'driver' });
-          navigate();
+          login(driver);
         }}
       />
     </View>

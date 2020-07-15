@@ -1,17 +1,26 @@
 import React from 'react';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
+import TabNavProvider from '../../context/TabNav';
 import Instructions from './Instructions';
 import Map from './Map';
+import { PropsTabNav } from '../../routes/Signed/routeTypes';
+import { RootTabNavigation } from './tabTypes';
 
-const Tab = createMaterialTopTabNavigator();
+const Tab = createMaterialTopTabNavigator<RootTabNavigation>();
 
-const TabNav: React.FC = () => {
+const TabNav: React.FC<PropsTabNav> = ({ route }) => {
   return (
-    <Tab.Navigator>
-      <Tab.Screen name="Map" component={Map} />
-      <Tab.Screen name="Instructions" component={Instructions} />
-    </Tab.Navigator>
+    <TabNavProvider>
+      <Tab.Navigator>
+        <Tab.Screen
+          name="Map"
+          component={Map}
+          initialParams={{ deliverKey: route.params?.deliverKey }}
+        />
+        <Tab.Screen name="Instructions" component={Instructions} />
+      </Tab.Navigator>
+    </TabNavProvider>
   );
 };
 

@@ -12,7 +12,33 @@ const Instructions: React.FC = () => {
         <>
           {legs.map((item, index) => (
             <View key={`${item.end_address}, ${item.start_address}`}>
-              {index === 0 ? (
+              {index === 0 && (
+                <View style={styles.point}>
+                  <Image source={require('../../../mapIcons/Vector.png')} />
+                  <View style={styles.textBox}>
+                    <Text style={{ ...styles.pointText, ...styles.text }}>
+                      {item.start_address}
+                    </Text>
+                  </View>
+                </View>
+              )}
+              <View>
+                <Text
+                  style={styles.text}
+                >{`${item.distance.text}. Cerca de ${item.duration.text}`}</Text>
+                {item.steps.map(step => (
+                  <View
+                    key={`${step.html_instructions}, ${step.polyline}`}
+                    style={[styles.line, styles.withBorder]}
+                  >
+                    <Text style={styles.text}>
+                      {step.html_instructions.replace(
+                        /<b>|<\/b>|<div>|<\/div>|<div style="font-size:0.9em">/g,
+                        ' ',
+                      )}
+                    </Text>
+                  </View>
+                ))}
                 <View style={styles.point}>
                   <Image source={require('../../../mapIcons/Vector.png')} />
                   <View style={styles.textBox}>
@@ -21,34 +47,7 @@ const Instructions: React.FC = () => {
                     </Text>
                   </View>
                 </View>
-              ) : (
-                <View>
-                  <Text
-                    style={styles.text}
-                  >{`${item.distance.text}. Cerca de ${item.duration.text}`}</Text>
-                  {item.steps.map(step => (
-                    <View
-                      key={step.polyline.points.toString()}
-                      style={[styles.line, styles.withBorder]}
-                    >
-                      <Text style={styles.text}>
-                        {step.html_instructions.replace(
-                          /<b>|<\/b>|<div>|<\/div>|<div style="font-size:0.9em">/g,
-                          ' ',
-                        )}
-                      </Text>
-                    </View>
-                  ))}
-                  <View style={styles.point}>
-                    <Image source={require('../../../mapIcons/Vector.png')} />
-                    <View style={styles.textBox}>
-                      <Text style={{ ...styles.pointText, ...styles.text }}>
-                        {item.end_address}
-                      </Text>
-                    </View>
-                  </View>
-                </View>
-              )}
+              </View>
             </View>
           ))}
           <Text style={{ ...styles.text, ...styles.copyrights }}>

@@ -1,8 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Button, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import MapView, { Marker } from 'react-native-maps';
-import MapDirections from 'react-native-maps-directions';
+import {
+  getCurrentPositionAsync,
+  requestPermissionsAsync,
+} from 'expo-location';
+import MapDirections, {
+  MapDirectionsResponse,
+} from 'react-native-maps-directions';
 import { ApiKey } from '../../../services/Api.key';
 import { api } from '../../../services/api';
 import { MapScreenProps } from '../tabTypes';
@@ -28,44 +33,83 @@ const Map: React.FC<MapScreenProps> = ({ route }) => {
     longitude: -49.2942842,
   });
 
-  const { setLegs, setCopyrights, setDeliverContext } = useContext(
-    TabNavContext,
-  );
+  const {
+    setLegs,
+    setCopyrights,
+    deliverContext,
+    setDeliverContext,
+  } = useContext(TabNavContext);
 
   useEffect(() => {
-    if (delivers?.packages.filter(item => item.product === 'center')[0]) {
-      const newCenter = {
-        latitude: delivers.packages.filter(item => item.product === 'center')[0]
-          .latitude,
-        longitude: delivers.packages.filter(
-          item => item.product === 'center',
-        )[0].longitude,
-      };
-      setCenter(newCenter);
-    } else {
+    async function loadDelivers() {
+      if (route.params.key && !route.params.packages) {
+        api.get(`/getdeliver/${route.params.key}`).then(response => {
+          const { deliver, packages } = response.data;
+          setDeliver({ ...deliver, packages });
+        });
+      }
     }
+    loadDelivers();
+  }, [route]);
+
+  useEffect(() => {
+    async function settingCenter() {
+      const centerByDelivers = delivers?.packages.find(
+        item => item.product === 'center',
+      );
+      if (centerByDelivers) {
+        delete centerByDelivers?.id;
+        delete centerByDelivers?.product;
+        setCenter(centerByDelivers);
+      } else {
+        const { granted } = await requestPermissionsAsync();
+        if (granted) {
+          const { coords } = await getCurrentPositionAsync({
+            enableHighAccuracy: true,
+          });
+          const centerByExpo = {
+            latitude: coords.latitude,
+            longitude: coords.longitude,
+          };
+          setCenter(centerByExpo);
+        }
+      }
+    }
+    settingCenter();
   }, [delivers]);
-  useEffect(() => {
-    if (!route.params?.packages) {
-      api.get(`/getdeliver/${route.params.key}`).then(response => {
-        const { deliver, packages } = response.data;
-        setDeliver({ ...deliver, packages });
-      });
-    } else if (route.params.key && route.params.packages) {
-      setDeliver({
-        key: route.params.key,
-        id: 0,
-        amount: route.params.packages.length,
-        packages: route.params.packages,
-      });
-      setDeliverContext({ ...route.params });
-    }
-  }, [route, setDeliverContext]);
 
-  const navigation = useNavigation();
-  function navigate(): void {
-    navigation.goBack();
+  useEffect(() => {
+    if (route.params.key && route.params.packages) {
+      setDeliverContext({
+        key: route.params.key,
+        packages: [
+          ...route.params.packages,
+          { id: -1, ...center, product: 'center' },
+        ],
+      });
+    }
+  }, [center, route, setDeliverContext]);
+
+  useEffect(() => {
+    if (deliverContext?.packages && deliverContext.key && !delivers) {
+      setDeliver({
+        key: deliverContext.key,
+        id: 0,
+        amount: deliverContext.packages.length,
+        packages: [...deliverContext.packages.map(item => item)],
+      });
+    }
+  }, [deliverContext, delivers]);
+
+  async function navigate(): Promise<void> {
+    //const response = await register();
   }
+
+  function handleMapDirectionsResponse(mapResponse: MapDirectionsResponse) {
+    setCopyrights(mapResponse.copyrights);
+    setLegs(mapResponse.legs);
+  }
+
   return (
     <>
       <MapView
@@ -79,10 +123,11 @@ const Map: React.FC<MapScreenProps> = ({ route }) => {
       >
         {delivers?.packages.map(item => (
           <Marker
-            key={item.id}
+            key={`${item.id}, ${item.latitude}, ${item.longitude}`}
             coordinate={{ latitude: item.latitude, longitude: item.longitude }}
           />
         ))}
+        <Marker coordinate={center} />
         <MapDirections
           origin={center}
           waypoints={delivers?.packages.map(item => ({
@@ -93,21 +138,20 @@ const Map: React.FC<MapScreenProps> = ({ route }) => {
           destination={center}
           apikey={ApiKey}
           onError={e => console.log('error ', e)}
-          onReady={e => {
-            setLegs(e.legs);
-            setCopyrights(e.copyrights);
-          }}
+          onReady={handleMapDirectionsResponse}
           strokeWidth={2}
           optimizeWaypoints={true}
           strokeColor={'#7159c1'}
         />
       </MapView>
-      <Button
-        title="navigate"
-        onPress={() => {
-          navigate();
-        }}
-      />
+      {route.params.packages && (
+        <Button
+          title="navigate"
+          onPress={() => {
+            navigate();
+          }}
+        />
+      )}
     </>
   );
 };

@@ -1,9 +1,19 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 
+export interface IDeliver {
+  key?: string;
+  packages?: {
+    id: number;
+    product: string;
+    latitude: number;
+    longitude: number;
+  }[];
+}
+
 export type RootStackParamList = {
   AllDelivers: undefined;
-  TabNav: { deliverKey: string } | undefined;
+  TabNav: IDeliver;
   NewDeliver: undefined;
 };
 type TabNavScreenNavigationProp = StackNavigationProp<

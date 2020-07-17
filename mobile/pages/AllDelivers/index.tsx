@@ -28,7 +28,7 @@ const AllDelivers: React.FC<PropsAllDelivers> = ({ navigation }) => {
     navigation.navigate('NewDeliver');
   }
   function navigateToDetail(key: string) {
-    navigation.navigate('TabNav', { deliverKey: key });
+    navigation.navigate('TabNav', { key });
   }
   return (
     <View style={styles.container}>

@@ -16,7 +16,7 @@ const TabNav: React.FC<PropsTabNav> = ({ route }) => {
         <Tab.Screen
           name="Map"
           component={Map}
-          initialParams={{ deliverKey: route.params?.deliverKey }}
+          initialParams={{ ...route.params }}
         />
         <Tab.Screen name="Instructions" component={Instructions} />
       </Tab.Navigator>

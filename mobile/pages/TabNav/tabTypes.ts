@@ -1,7 +1,8 @@
 import { RouteProp } from '@react-navigation/native';
+import { IDeliver } from '../../routes/Signed/routeTypes';
 
 export type RootTabNavigation = {
-  Map: { deliverKey: string } | undefined;
+  Map: IDeliver;
   Instructions: undefined;
 };
 

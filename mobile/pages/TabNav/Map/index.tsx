@@ -9,28 +9,28 @@ import { MapScreenProps } from '../tabTypes';
 import { TabNavContext } from '../../../context/TabNav';
 
 // import { Container } from './styles';
-interface DeliverData {
+interface IDeliverData {
   id: number;
   key: string;
   amount: number;
-  packages: [
-    {
-      id: number;
-      product: string;
-      latitude: number;
-      longitude: number;
-    },
-  ];
+  packages: {
+    id: number;
+    product: string;
+    latitude: number;
+    longitude: number;
+  }[];
 }
 
 const Map: React.FC<MapScreenProps> = ({ route }) => {
-  const [delivers, setDeliver] = useState<DeliverData>();
+  const [delivers, setDeliver] = useState<IDeliverData>();
   const [center, setCenter] = useState({
     latitude: -25.6438383,
     longitude: -49.2942842,
   });
 
-  const { setLegs, setCopyrights } = useContext(TabNavContext);
+  const { setLegs, setCopyrights, setDeliverContext } = useContext(
+    TabNavContext,
+  );
 
   useEffect(() => {
     if (delivers?.packages.filter(item => item.product === 'center')[0]) {
@@ -42,14 +42,25 @@ const Map: React.FC<MapScreenProps> = ({ route }) => {
         )[0].longitude,
       };
       setCenter(newCenter);
+    } else {
     }
   }, [delivers]);
   useEffect(() => {
-    api.get(`/getdeliver/${route.params?.deliverKey}`).then(response => {
-      const { deliver, packages } = response.data;
-      setDeliver({ ...deliver, packages });
-    });
-  }, [route]);
+    if (!route.params?.packages) {
+      api.get(`/getdeliver/${route.params.key}`).then(response => {
+        const { deliver, packages } = response.data;
+        setDeliver({ ...deliver, packages });
+      });
+    } else if (route.params.key && route.params.packages) {
+      setDeliver({
+        key: route.params.key,
+        id: 0,
+        amount: route.params.packages.length,
+        packages: route.params.packages,
+      });
+      setDeliverContext({ ...route.params });
+    }
+  }, [route, setDeliverContext]);
 
   const navigation = useNavigation();
   function navigate(): void {

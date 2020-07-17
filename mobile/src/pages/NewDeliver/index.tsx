@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, TextInput, Text, Button } from 'react-native';
 import { PropsNewDeliver } from '../../routes/Signed/routeTypes';
@@ -19,16 +20,29 @@ const NewDeliver: React.FC<PropsNewDeliver> = ({ navigation }) => {
   const [product, setProduct] = useState('');
   const [packages, setPackages] = useState<IDeliverPackages[]>([]);
   useEffect(() => {
-    let list = [];
-    for (let i = 0; i < 20; i++) {
-      list.push({
-        id: i,
-        product: 'batata',
-        latitude: -25.6438383 - i / 10000,
-        longitude: -49.2942842 - i / 10000,
-      });
-    }
-    setPackages(list);
+    setPackages([
+      { latitude: -25.642031, longitude: -49.302177, product: 'batata1', id: 0 },
+      { latitude: -25.645205, longitude: -49.296897, product: 'batata2', id: 1 },
+      { latitude: -25.646559, longitude: -49.302433, product: 'batata3', id: 2 },
+      { latitude: -25.645901, longitude: -49.308591, product: 'batata4', id: 3 },
+      { latitude: -25.653138, longitude: -49.315841, product: 'batata5', id: 4 },
+      { latitude: -25.653999, longitude: -49.321613, product: 'batata6', id: 5 },
+      { latitude: -25.657419, longitude: -49.330593, product: 'batata7', id: 6 },
+      { latitude: -25.662103, longitude: -49.336247, product: 'batata8', id: 7 },
+      { latitude: -25.669081, longitude: -49.328060, product: 'batata9', id: 8 },
+      { latitude: -25.666126, longitude: -49.325341, product: 'batata10', id: 9 },
+      { latitude: -25.664369, longitude: -49.311792, product: 'batata11', id: 9 },
+      { latitude: -25.663522, longitude: -49.305110, product: 'batata12', id: 10 },
+      { latitude: -25.669786, longitude: -49.303811, product: 'batata13', id: 11 },
+      { latitude: -25.659303, longitude: -49.294546, product: 'batata14', id: 12 },
+      { latitude: -25.649779, longitude: -49.291598, product: 'batata15', id: 13 },
+      { latitude: -25.641232, longitude: -49.274631, product: 'batata16', id: 14 },
+      { latitude: -25.637850, longitude: -49.295455, product: 'batata17', id: 15 },
+      { latitude: -25.641409, longitude: -49.293116, product: 'batata18', id: 16 },
+      { latitude: -25.640351, longitude: -49.288347, product: 'batata19', id: 17 },
+      { latitude: -25.645274, longitude: -49.288197, product: 'batata20', id: 18 },
+      { latitude: -25.634170, longitude: -49.295666, product: 'batata21', id: 19 },
+    ]);
   }, []);
 
   function navigate() {

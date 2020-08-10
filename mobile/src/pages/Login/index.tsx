@@ -22,12 +22,11 @@ const Login: React.FC = () => {
   const { setType } = useContext(AuthContext);
   function login(data: { name: string; password: string }): void {
     api.post('/login', data).then(response => {
+      api.defaults.headers.Authorization = `Baerer ${response.data.token}`;
       if (response.data.store) {
         setType('store');
-        api.defaults.headers.Authorization = response.data.store.id;
       } else if (response.data.driver) {
         setType('driver');
-        api.defaults.headers.Authorization = response.data.driver.id;
       }
       navigation.navigate('Signed');
     });

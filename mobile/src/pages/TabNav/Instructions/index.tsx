@@ -66,9 +66,7 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },
   point: {
     height: 50,
-    width: 371,
     margin: 5,
-    left: 8,
     flexDirection: 'row',
     backgroundColor: '#ebebeb',
     borderWidth: 0.2,
@@ -80,11 +78,11 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   pointText: {
-    width: 315,
+    width: 295,
   },
   line: {
-    left: 10,
-    width: 371,
+    left: 5,
+    width: 340,
     margin: 5,
   },
   withBorder: {

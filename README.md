@@ -1,4 +1,4 @@
-# APP para rota de entregas
+# API para rota de entregas
 
 ### Inicialização
 

@@ -27,6 +27,7 @@
     "react-native-svg": "^12.1.0",
     "reflect-metadata": "^0.1.10",
     "sqlite3": "^4.0.3",
+    "tsyringe": "^4.3.0",
     "typeorm": "0.2.25",
     "uuidv4": "^6.1.0"
   },
@@ -35,8 +36,7 @@
     "start": "ts-node-dev --inspect --transpileOnly --ignore-watch node_modules src/server.ts",
     "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js",
     "test": "NODE_ENV=postgres.test jest --detectOpenHandles",
-    "typeorm:postgres": "NODE_ENV=postgres ts-node-dev ./node_modules/typeorm/cli.js",
-    "typeorm:postgres:test": "NODE_ENV=postgres.test ts-node-dev ./node_modules/typeorm/cli.js"
+    "typeorm:test": "NODE_ENV=postgres.test ts-node-dev ./node_modules/typeorm/cli.js"
   },
   "license": "MIT",
   "jest": {

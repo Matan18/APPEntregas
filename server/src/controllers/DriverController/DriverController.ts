@@ -8,7 +8,8 @@ import DriversRepository from "../../database/repositories/DriversRepository";
 class DriverController {
   async create(request: Request, response: Response) {
     const { name, password } = request.body;
-    const storeId = request.headers.authorization;
+    const storeId = request.user.id;
+    console.log(storeId);
     connect.then(async (connection) => {
 
       const storesRepository = connection.getCustomRepository(StoresRepository);
@@ -28,7 +29,7 @@ class DriverController {
     })
   }
   async index(request: Request, response: Response) {
-    const storeId = request.headers.authorization;
+    const storeId = request.user.id;
     connect.then(async (connection) => {
 
       const storesRepository = connection.getCustomRepository(StoresRepository);

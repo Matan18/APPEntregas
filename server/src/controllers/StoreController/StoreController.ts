@@ -1,8 +1,10 @@
 import { Request, Response } from "express";
+import { sign } from "jsonwebtoken";
 
 import connect from "../../database/connections";
 import StoresRepository from "../../database/repositories/StoresRepository";
 import DriversRepository from "../../database/repositories/DriversRepository";
+import authConfig from "../../config/auth";
 
 class StoreController {
   async createAccount(request: Request, response: Response) {
@@ -28,13 +30,25 @@ class StoreController {
 
       const store = await storesRepository.login({ name, password });
       if (store) {
+        const { secret, expiresIn } = authConfig.jwt
+
+        const token = sign({}, secret, {
+          subject: store.id,
+          expiresIn,
+        });
         response.status(200)
-        return response.json({store})
+        return response.json({ store, token })
       }
       const driver = await driversRepository.login({ name, password })
       if (driver) {
+        const { secret, expiresIn } = authConfig.jwt
+
+        const token = sign({}, secret, {
+          subject: driver.id,
+          expiresIn,
+        });
         response.status(200)
-        return response.json({driver})
+        return response.json({ driver, token })
       }
       response.status(404)
       return response.send({ message: "Login not found" })

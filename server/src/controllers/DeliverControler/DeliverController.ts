@@ -8,7 +8,8 @@ import PackagesRepository from "../../database/repositories/PackagesRepository";
 
 class DeliverController {
   async index(request: Request, response: Response) {
-    const storeId = request.headers.authorization;
+    const storeId = request.user.id;
+
     connect.then(async (connection) => {
 
       const storesRepository = connection.getCustomRepository(StoresRepository);
@@ -27,7 +28,8 @@ class DeliverController {
     connect.then(async (connection) => {
 
       const { key } = request.query;
-      const driverId = request.headers.authorization;
+      const driverId = request.user.id;
+
       const driversRepository = connection.getCustomRepository(DriversRepository);
       const deliversRepository = connection.getCustomRepository(DeliversRepository);
       const packagesRepository = connection.getCustomRepository(PackagesRepository);
@@ -49,7 +51,7 @@ class DeliverController {
   }
   async searchParams(request: Request, response: Response) {
     connect.then(async (connection) => {
-      const storeId = request.headers.authorization;
+    const storeId = request.user.id;
       const { key } = request.params;
 
       const storesRepository = connection.getCustomRepository(StoresRepository);
@@ -78,7 +80,7 @@ class DeliverController {
   }
   async create(request: Request, response: Response) {
     const { key, packages } = request.body
-    const storeId = request.headers.authorization;
+    const storeId = request.user.id;
     
     await connect.then(async (connection) => {
       const storesRepository = connection.getCustomRepository(StoresRepository);

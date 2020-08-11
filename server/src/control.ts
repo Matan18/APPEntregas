@@ -1,8 +1,10 @@
 import express from "express";
+import 'dotenv';
 
 import DeliverController from "./controllers/DeliverControler/DeliverController";
 import DriverController from "./controllers/DriverController/DriverController";
 import StoreController from "./controllers/StoreController/StoreController";
+import ensureAuthenticated from "./middleware/ensureAuthenticated";
 
 const app = express();
 app.use(express.json())
@@ -18,6 +20,8 @@ const storeController = new StoreController();
 app.post('/register', storeController.createAccount)
 app.post('/login', storeController.session)
 
+
+app.use(ensureAuthenticated);
 
 app.post('/newdriver', driverController.create)
 app.get('/alldrivers', driverController.index);

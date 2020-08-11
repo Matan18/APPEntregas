@@ -1,6 +1,6 @@
 import { EntityRepository, AbstractRepository } from "typeorm";
-import { Store } from "../entity/Store";
-import { Deliver } from "../entity/Deliver";
+import { Store } from "../../../../stores/infra/typeorm/entities/Store";
+import { Deliver } from "../entities/Deliver";
 
 interface DeliverSampleDTO {
   key: string;

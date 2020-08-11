@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 
-import connect from "../../database/connections";
-import StoresRepository from "../../database/repositories/StoresRepository";
-import DriversRepository from "../../database/repositories/DriversRepository";
-import DeliversRepository from "../../database/repositories/DeliversRepository";
-import PackagesRepository from "../../database/repositories/PackagesRepository";
+import connect from "../../../../../shared/database/connections";
+import StoresRepository from "../../../../../modules/stores/infra/typeorm/repositories/StoresRepository";
+import DriversRepository from "../../../../../modules/drivers/infra/typeorm/repositories/DriversRepository";
+import DeliversRepository from "../../../../../modules/delivers/infra/typeorm/repositories/DeliversRepository";
+import PackagesRepository from "../../../../../modules/delivers/infra/typeorm/repositories/PackagesRepository";
 
 class DeliverController {
   async index(request: Request, response: Response) {

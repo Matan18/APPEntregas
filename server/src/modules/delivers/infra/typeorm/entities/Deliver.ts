@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany, Unique, CreateDateColumn, UpdateDateColumn } from "typeorm";
-import { Store } from "./Store";
-import { Driver } from "./Driver";
+import { Store } from "../../../../stores/infra/typeorm/entities/Store";
+import { Driver } from "../../../../drivers/infra/typeorm/entities/Driver";
 import { Package } from "./Package";
 
 @Entity()

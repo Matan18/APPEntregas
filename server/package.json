@@ -34,7 +34,7 @@
   },
   "scripts": {
     "play": "ts-node src/index.ts",
-    "start": "ts-node-dev --inspect --transpileOnly --ignore-watch node_modules src/server.ts",
+    "start": "ts-node-dev --inspect --transpileOnly --ignore-watch node_modules src/shared/infra/http/server.ts",
     "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js",
     "test": "NODE_ENV=postgres.test jest --detectOpenHandles",
     "typeorm:test": "NODE_ENV=postgres.test ts-node-dev ./node_modules/typeorm/cli.js"

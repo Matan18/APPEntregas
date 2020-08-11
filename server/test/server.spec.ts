@@ -1,5 +1,5 @@
 import supertest from "supertest";
-import app from "../src/control";
+import app from "../src/shared/infra/http/routes/control";
 
 let storeId = ""
 let driverId = ""

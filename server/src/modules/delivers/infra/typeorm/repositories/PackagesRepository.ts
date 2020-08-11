@@ -1,6 +1,6 @@
 import { EntityRepository, AbstractRepository } from "typeorm";
-import { Deliver } from "../entity/Deliver";
-import { Package } from "../entity/Package";
+import { Deliver } from "../entities/Deliver";
+import { Package } from "../entities/Package";
 
 interface IPackageDTO {
   product: string,

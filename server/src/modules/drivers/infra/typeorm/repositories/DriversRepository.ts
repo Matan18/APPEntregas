@@ -1,7 +1,7 @@
 import { EntityRepository, AbstractRepository } from "typeorm";
 import { uuid } from "uuidv4";
-import { Driver } from "../entity/Driver";
-import { Store } from "../entity/Store";
+import { Driver } from "../entities/Driver";
+import { Store } from "../../../../stores/infra/typeorm/entities/Store";
 
 interface DriverSampleDTO {
   name: string;

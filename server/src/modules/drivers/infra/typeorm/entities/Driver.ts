@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryColumn, ManyToOne, OneToMany, CreateDateColumn, UpdateDateColumn } from "typeorm";
-import { Store } from "./Store";
-import { Deliver } from "./Deliver";
+import { Store } from "../../../../stores/infra/typeorm/entities/Store";
+import { Deliver } from "../../../../delivers/infra/typeorm/entities/Deliver";
 
 @Entity()
 export class Driver {

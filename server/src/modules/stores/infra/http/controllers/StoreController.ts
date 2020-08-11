@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import { sign } from "jsonwebtoken";
 
-import connect from "../../database/connections";
-import StoresRepository from "../../database/repositories/StoresRepository";
-import DriversRepository from "../../database/repositories/DriversRepository";
-import authConfig from "../../config/auth";
+import connect from "../../../../../shared/database/connections";
+import StoresRepository from "../../typeorm/repositories/StoresRepository";
+import DriversRepository from "../../../../drivers/infra/typeorm/repositories/DriversRepository";
+import authConfig from "../../../../../config/auth";
 
 class StoreController {
   async createAccount(request: Request, response: Response) {

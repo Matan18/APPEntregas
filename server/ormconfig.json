@@ -8,7 +8,7 @@
     "password": "docker",
     "database": "postgres",
     "entities": [
-      "./src/database/entity/*.ts"
+      "./src/modules/**/infra/typeorm/entities/*.ts"
     ],
     "migrations": [
       "./src/database/migrations/*.ts"
@@ -26,7 +26,7 @@
     "password": "docker",
     "database": "entregas_test",
     "entities": [
-      "./src/database/entity/*.ts"
+      "./src/modules/**/infra/typeorm/entities/*.ts"
     ],
     "migrations": [
       "./src/database/migrations/*.ts"

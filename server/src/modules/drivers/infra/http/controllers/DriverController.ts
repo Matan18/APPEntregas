@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 
-import connect from "../../database/connections";
-import StoresRepository from "../../database/repositories/StoresRepository";
-import DriversRepository from "../../database/repositories/DriversRepository";
+import connect from "../../../../../shared/database/connections";
+import StoresRepository from "../../../../stores/infra/typeorm/repositories/StoresRepository";
+import DriversRepository from "../../typeorm/repositories/DriversRepository";
 
 
 class DriverController {

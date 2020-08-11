@@ -1,10 +1,10 @@
 import express from "express";
 import 'dotenv';
 
-import DeliverController from "./controllers/DeliverControler/DeliverController";
-import DriverController from "./controllers/DriverController/DriverController";
-import StoreController from "./controllers/StoreController/StoreController";
-import ensureAuthenticated from "./middleware/ensureAuthenticated";
+import DeliverController from "../../../../modules/delivers/infra/http/controllers/DeliverController";
+import DriverController from "../../../../modules/drivers/infra/http/controllers/DriverController";
+import StoreController from "../../../../modules/stores/infra/http/controllers/StoreController";
+import ensureAuthenticated from "../middleware/ensureAuthenticated";
 
 const app = express();
 app.use(express.json())

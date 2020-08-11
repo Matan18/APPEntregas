@@ -5,15 +5,15 @@ import IPackagesRepository from "modules/delivers/repositories/IPackagesReposito
 
 class PackagesRepository implements IPackagesRepository {
   private repository: Repository<Package>;
-  constructor(transaction?:EntityManager) {
-    if(transaction){
-      this.repository=transaction.getRepository(Package);
-    }else{
+  constructor(transaction?: EntityManager) {
+    if (transaction) {
+      this.repository = transaction.getRepository(Package);
+    } else {
       this.repository = getRepository(Package);
     }
   }
   async create({ product, latitude, longitude, deliver }) {
-    const pack = new Package();
+    const pack = this.repository.create();
     pack.latitude = latitude;
     pack.longitude = longitude;
     pack.product = product;

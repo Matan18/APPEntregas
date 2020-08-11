@@ -13,10 +13,10 @@ class DeliversRepository implements IDeliversRepository {
     }
   }
   async create({ key, amount, store }) {
-    const newDeliver = new Deliver()
-    newDeliver.store = store
-    newDeliver.amount = amount
-    newDeliver.key = key
+    const newDeliver = this.repository.create();
+    newDeliver.store = store;
+    newDeliver.amount = amount;
+    newDeliver.key = key;
 
     const deliver = await this.repository.save(newDeliver)
     return deliver;

@@ -1,7 +1,7 @@
 import supertest from "supertest";
 import app from "../src/shared/infra/http/routes/control";
 import createConnection from "../src/shared/database/connections";
-import { Connection } from "typeorm";
+import { Connection, getConnection } from "typeorm";
 
 let storeId = ""
 let driverId = ""
@@ -42,30 +42,38 @@ const data = {
     ]
   }
 }
-let connection: Connection;
+let connection: Connection
 describe("Initial", () => {
   beforeAll(async () => {
-    connection = await createConnection();
-    
-    await connection.query('DROP TABLE IF EXISTS packges');
+    connection = await createConnection("test-connection");
+
+    await connection.query('DROP TABLE IF EXISTS packages');
     await connection.query('DROP TABLE IF EXISTS delivers');
     await connection.query('DROP TABLE IF EXISTS drivers');
     await connection.query('DROP TABLE IF EXISTS stores');
     await connection.query('DROP TABLE IF EXISTS migrations');
 
     await connection.runMigrations();
-
   })
-  it("Should return success", async (done) => {
-    const response = await supertest(app)
-      .get('/test')
-    expect(response.body).toHaveProperty('message')
-    expect(response.body.message).toEqual('success')
-    done();
+  afterAll(async () => {
+    const mainConnection = getConnection();
+
+    await connection.close();
+    await mainConnection.close();
   })
 })
 
 describe("Store", () => {
+  beforeAll(async () => {
+    connection = await createConnection();
+    await connection.runMigrations();
+  })
+  afterAll(async () => {
+    const mainConnection = getConnection();
+
+    await connection.close();
+    await mainConnection.close();
+  })
   it("Should save a store", async (done) => {
     const response = await supertest(app)
       .post('/register')
@@ -101,6 +109,17 @@ describe("Store", () => {
   })
 })
 describe('Driver', () => {
+  beforeAll(async () => {
+    connection = await createConnection();
+    await connection.runMigrations();
+
+  })
+  afterAll(async () => {
+    const mainConnection = getConnection();
+
+    await connection.close();
+    await mainConnection.close();
+  })
   it("Should login a Driver", async (done) => {
     await supertest(app)
       .post('/login')
@@ -143,6 +162,16 @@ describe('Driver', () => {
   })
 })
 describe('Deliver', () => {
+  beforeAll(async () => {
+    connection = await createConnection();
+
+  })
+  afterAll(async () => {
+    const mainConnection = getConnection();
+
+    await connection.close();
+    await mainConnection.close();
+  })
   it("Should save a deliver", async (done) => {
     await supertest(app)
       .post('/newdeliver')

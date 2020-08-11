@@ -1,10 +1,10 @@
-import { Entity, Column, PrimaryColumn, ManyToOne, OneToMany, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import { Entity, Column, ManyToOne, OneToMany, CreateDateColumn, UpdateDateColumn, JoinColumn, PrimaryGeneratedColumn } from "typeorm";
 import { Store } from "../../../../stores/infra/typeorm/entities/Store";
 import { Deliver } from "../../../../delivers/infra/typeorm/entities/Deliver";
 
-@Entity()
+@Entity('drivers')
 export class Driver {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
@@ -13,7 +13,11 @@ export class Driver {
   @Column()
   password: string;
 
+  @Column()
+  store_id: string;
+
   @ManyToOne(type => Store, store => store.drivers)
+  @JoinColumn({ name: 'store_id' })
   store: Store;
 
   @OneToMany(type => Deliver, deliver => deliver.driver)

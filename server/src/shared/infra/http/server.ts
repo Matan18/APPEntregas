@@ -1,3 +1,4 @@
+import "dotenv/config"
 import app from "./routes/control";
 
 app.listen(3333, ()=>{

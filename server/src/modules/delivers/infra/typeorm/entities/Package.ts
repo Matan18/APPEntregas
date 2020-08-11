@@ -1,9 +1,9 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, ManyToMany, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, ManyToMany, CreateDateColumn, UpdateDateColumn, JoinColumn } from "typeorm";
 import { Deliver } from "./Deliver";
 
-@Entity()
+@Entity('packages')
 export class Package {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: number;
 
   @Column()
@@ -15,6 +15,10 @@ export class Package {
   @Column()
   longitude: number;
 
+  @Column()
+  deliver_id: string;
+
   @ManyToOne(type => Deliver, deliver => deliver.packages, { cascade: true })
+  @JoinColumn({ name: 'deliver_id' })
   deliver: Deliver
 }

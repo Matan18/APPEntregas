@@ -7,10 +7,6 @@ import ensureAuthenticated from "../middleware/ensureAuthenticated";
 
 const app = express();
 app.use(express.json())
-app.get('/test', (req, res) => {
-  console.log("Access")
-  res.send({ message: "success" })
-})
 
 const deliverControler = new DeliverController();
 const driverController = new DriverController();

@@ -1,10 +1,10 @@
-import { Entity, Column, PrimaryColumn, OneToMany, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import { Entity, Column, OneToMany, CreateDateColumn, UpdateDateColumn, PrimaryGeneratedColumn } from "typeorm";
 import { Deliver } from "../../../../delivers/infra/typeorm/entities/Deliver";
 import { Driver } from "../../../../drivers/infra/typeorm/entities/Driver";
 
-@Entity()
+@Entity('stores')
 export class Store {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()

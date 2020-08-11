@@ -1,5 +1,4 @@
 import express from "express";
-import 'dotenv';
 
 import DeliverController from "../../../../modules/delivers/infra/http/controllers/DeliverController";
 import DriverController from "../../../../modules/drivers/infra/http/controllers/DriverController";

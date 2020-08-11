@@ -1,6 +1,5 @@
-[
   {
-    "name":"default",
+    "name": "default",
     "type": "postgres",
     "host": "localhost",
     "port": 5433,
@@ -11,28 +10,9 @@
       "./src/modules/**/infra/typeorm/entities/*.ts"
     ],
     "migrations": [
-      "./src/database/migrations/*.ts"
+      "./src/shared/database/migrations/*.ts"
     ],
     "cli": {
-      "migrationsDir": "./src/database/migrations"
-    }
-  },
-  {
-    "name":"pgTest",
-    "type": "postgres",
-    "host": "localhost",
-    "port": 5433,
-    "username": "postgres",
-    "password": "docker",
-    "database": "entregas_test",
-    "entities": [
-      "./src/modules/**/infra/typeorm/entities/*.ts"
-    ],
-    "migrations": [
-      "./src/database/migrations/*.ts"
-    ],
-    "cli": {
-      "migrationsDir": "./src/database/migrations"
+      "migrationsDir": "./src/shared/database/migrations"
     }
   }
-]

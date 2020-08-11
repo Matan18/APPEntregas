@@ -1,5 +1,7 @@
 import supertest from "supertest";
 import app from "../src/shared/infra/http/routes/control";
+import createConnection from "../src/shared/database/connections";
+import { Connection } from "typeorm";
 
 let storeId = ""
 let driverId = ""
@@ -40,8 +42,20 @@ const data = {
     ]
   }
 }
-
+let connection: Connection;
 describe("Initial", () => {
+  beforeAll(async () => {
+    connection = await createConnection();
+    
+    await connection.query('DROP TABLE IF EXISTS packges');
+    await connection.query('DROP TABLE IF EXISTS delivers');
+    await connection.query('DROP TABLE IF EXISTS drivers');
+    await connection.query('DROP TABLE IF EXISTS stores');
+    await connection.query('DROP TABLE IF EXISTS migrations');
+
+    await connection.runMigrations();
+
+  })
   it("Should return success", async (done) => {
     const response = await supertest(app)
       .get('/test')

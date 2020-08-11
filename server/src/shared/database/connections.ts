@@ -1,17 +1,16 @@
 import "reflect-metadata";
-import { createConnection } from "typeorm";
+import { createConnection, getConnectionOptions, Connection } from 'typeorm';
 
-let dbName = ''
+export default async (name = 'default'): Promise<Connection> => {
+  const defaultOptions = await getConnectionOptions();
 
-switch (process.env.NODE_ENV) {
-  case 'postgres.test':
-    dbName = 'pgTest';
-    break;
-  default:
-    dbName = 'default';
-    break;
-}
-const connect = createConnection(dbName)
-
-
-export default connect;
+  return createConnection(
+    Object.assign(defaultOptions, {
+      name,
+      database:
+        process.env.NODE_ENV === 'test'
+          ? 'entregas_test'
+          : defaultOptions.database,
+    }),
+  );
+};

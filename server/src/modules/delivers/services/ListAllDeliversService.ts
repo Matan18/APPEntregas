@@ -3,6 +3,7 @@ import IDeliversRepository from "../repositories/IDeliversRepository";
 import StoresRepository from "../../stores/infra/typeorm/repositories/StoresRepository";
 import DeliversRepository from "../infra/typeorm/repositories/DeliversRepository";
 import { Deliver } from "../infra/typeorm/entities/Deliver";
+import AppError from "../../../shared/errors/AppError";
 
 interface IRequest {
   storeId: string;
@@ -20,6 +21,9 @@ class ListAllDeliversService {
   }
   public async execute({ storeId }: IRequest): Promise<IResponse> {
     const store = await this.storesRepository.findOne(storeId)
+    if (!store) {
+      throw new AppError("Store not found");
+    }
     const delivers = await this.deliversRepository.findAll(store)
 
     return { delivers };

@@ -15,7 +15,6 @@ interface IResponse {
   deliver: Deliver;
 }
 
-
 class SearchDeliverByStoreService {
   private storesRepository: IStoresRepository;
   private deliversRepository: IDeliversRepository;

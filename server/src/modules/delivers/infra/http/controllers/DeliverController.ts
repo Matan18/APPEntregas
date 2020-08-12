@@ -10,42 +10,28 @@ class DeliverController {
     const { key, packages } = request.body
     const storeId = request.user.id;
 
-    try {
-      const createDeliver = new CreateDeliverService();
-      const { deliver } = await createDeliver.execute({ storeId, key, packages });
-      response.status(201)
-      return response.json({ deliver })
-    } catch (err) {
-      console.log(err)
-      return response.status(500).json(err)
-    }
+    const createDeliver = new CreateDeliverService();
+    const { deliver } = await createDeliver.execute({ storeId, key, packages });
+
+    response.status(201)
+    return response.json({ deliver })
   }
   async index(request: Request, response: Response) {
     const storeId = request.user.id;
-    try {
-      const listAllDelivers = new ListAllDeliversService();
-      const { delivers } = await listAllDelivers.execute({ storeId });
-      response.status(200)
-      return response.json({ delivers })
-    } catch (err) {
-      console.log(err)
-      return response.status(500).json(err)
-    }
+    const listAllDelivers = new ListAllDeliversService();
+    const { delivers } = await listAllDelivers.execute({ storeId });
+    response.status(200)
+    return response.json({ delivers })
   }
   async searchParams(request: Request, response: Response) {
     const storeId = request.user.id;
     const { key } = request.params;
-    try {
 
-      const searchFromStore = new SearchDeliverByStoreService();
-      const { deliver } = await searchFromStore.execute({ storeId, key });
+    const searchFromStore = new SearchDeliverByStoreService();
+    const { deliver } = await searchFromStore.execute({ storeId, key });
 
-      response.status(200)
-      return response.json({ deliver })
-    } catch (err) {
-      console.log(err)
-      return response.status(500).json(err)
-    }
+    response.status(200)
+    return response.json({ deliver })
   }
   async searchQuery(request: Request, response: Response) {
     try {

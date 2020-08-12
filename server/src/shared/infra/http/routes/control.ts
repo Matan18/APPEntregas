@@ -1,9 +1,11 @@
-import express from "express";
+import express, { Request, Response, NextFunction } from "express";
+import 'express-async-errors';
 
 import DeliverController from "../../../../modules/delivers/infra/http/controllers/DeliverController";
 import DriverController from "../../../../modules/drivers/infra/http/controllers/DriverController";
 import StoreController from "../../../../modules/stores/infra/http/controllers/StoreController";
 import ensureAuthenticated from "../middleware/ensureAuthenticated";
+import AppError from "../../../errors/AppError";
 
 const app = express();
 app.use(express.json())
@@ -26,5 +28,19 @@ app.post('/newdeliver', deliverControler.create);
 app.get('/getdeliver/:key', deliverControler.searchParams);
 app.get('/getdeliver', deliverControler.searchQuery);
 app.get('/alldelivers', deliverControler.index);
+
+app.use((err: Error, request: Request, response: Response, _: NextFunction) => {
+  if (err instanceof AppError) {
+    return response.status(err.statusCode).json({
+      status: 'error',
+      message: err.message,
+    });
+  }
+  console.log(err)
+  return response.status(500).json({
+    status: 'error',
+    message: 'Internal server error',
+  });
+});
 
 export default app;

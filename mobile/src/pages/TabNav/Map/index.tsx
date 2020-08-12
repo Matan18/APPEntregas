@@ -44,8 +44,8 @@ const Map: React.FC<MapScreenProps> = ({ route }) => {
     async function loadDelivers() {
       if (route.params.key && !route.params.packages) {
         api.get(`/getdeliver/${route.params.key}`).then(response => {
-          const { deliver, packages } = response.data;
-          setDeliver({ ...deliver, packages });
+          const { deliver } = response.data;
+          setDeliver({ ...deliver });
         });
       }
     }

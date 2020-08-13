@@ -28,11 +28,11 @@ class SearchDeliverByStoreService {
   public async execute({ storeId, key }: IRequest): Promise<IResponse> {
     const store = await this.storesRepository.findOne(storeId);
     if (!store) {
-      throw new AppError("Store not found");
+      throw new AppError("Store not found", 403);
     }
     const deliver = await this.deliversRepository.findOne({ key, store });
     if (!deliver) {
-      throw new AppError("Deliver Key not found");
+      throw new AppError("Deliver Key not found", 404);
     }
     const packs = await this.packagesRepository.find(deliver)
     deliver.packages = packs;

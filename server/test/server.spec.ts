@@ -74,7 +74,7 @@ describe("Store", () => {
     await connection.close();
     await mainConnection.close();
   })
-  it("Should save a store", async (done) => {
+  it("should be able to register a store", async (done) => {
     const response = await supertest(app)
       .post('/register')
       .send({ ...data.Store, ...data.Driver })
@@ -92,7 +92,7 @@ describe("Store", () => {
     })
     done()
   })
-  it("Should login a store", async (done) => {
+  it("should be able login a store", async (done) => {
     await supertest(app)
       .post('/login')
       .send({ name: data.Store.name, password: data.Store.password })
@@ -104,6 +104,30 @@ describe("Store", () => {
         })
         expect(response.body).toHaveProperty('token');
         storeId = `Baerer ${response.body.token}`;
+      })
+    done();
+  })
+  it("should not be able to login a Store with invalid credentials", async (done) => {
+    await supertest(app)
+      .post('/login')
+      .send({ name: data.Store.name, password: "invalid password" })
+      .set('Accept', 'application/json')
+      .expect((response) => {
+        expect(response.status).toEqual(401)
+      })
+    await supertest(app)
+      .post('/login')
+      .send({ name: 'invalid name', password: data.Store.password })
+      .set('Accept', 'application/json')
+      .expect((response) => {
+        expect(response.status).toEqual(401)
+      })
+    await supertest(app)
+      .post('/login')
+      .send({ name: 'invalid name', password: 'invalid password' })
+      .set('Accept', 'application/json')
+      .expect((response) => {
+        expect(response.status).toEqual(401)
       })
     done();
   })
@@ -120,7 +144,7 @@ describe('Driver', () => {
     await connection.close();
     await mainConnection.close();
   })
-  it("Should login a Driver", async (done) => {
+  it("should to able to login a Driver", async (done) => {
     await supertest(app)
       .post('/login')
       .set('Accept', 'application/json')
@@ -134,7 +158,31 @@ describe('Driver', () => {
       })
     done();
   })
-  it("Should save a new Driver", async (done) => {
+  it("Should not be able to login a Driver with invalid credentials", async (done) => {
+    await supertest(app)
+      .post('/login')
+      .set('Accept', 'application/json')
+      .send({ name: data.Driver.user, password: "invalid password" })
+      .expect((response) => {
+        expect(response.status).toEqual(401)
+      })
+    await supertest(app)
+      .post('/login')
+      .set('Accept', 'application/json')
+      .send({ name: "invalid name", password: data.Driver.userPassword })
+      .expect((response) => {
+        expect(response.status).toEqual(401)
+      })
+    await supertest(app)
+      .post('/login')
+      .set('Accept', 'application/json')
+      .send({ name: "invalid name", password: 'invalid password' })
+      .expect((response) => {
+        expect(response.status).toEqual(401)
+      })
+    done();
+  })
+  it("should be able to register a new Driver by a Store", async (done) => {
     await supertest(app)
       .post('/newdriver')
       .set("Authorization", storeId)
@@ -148,7 +196,7 @@ describe('Driver', () => {
       })
     done();
   })
-  it("Should return a list of Drivers from a Store", async (done) => {
+  it("Should be able to return a list of Drivers from a Store", async (done) => {
     await supertest(app)
       .get('/alldrivers')
       .set("Authorization", storeId)
@@ -172,7 +220,7 @@ describe('Deliver', () => {
     await connection.close();
     await mainConnection.close();
   })
-  it("Should save a deliver", async (done) => {
+  it("should be able to register a deliver", async (done) => {
     await supertest(app)
       .post('/newdeliver')
       .set("Authorization", storeId)
@@ -190,7 +238,27 @@ describe('Deliver', () => {
       })
     done();
   })
-  it("Should return a deliver by store", async (done) => {
+  it("Should not be able to save a deliver with invalid token", async (done) => {
+    await supertest(app)
+      .post('/newdeliver')
+      .set("Authorization", "invalid token")
+      .send(data.Deliver)
+      .expect((response) => {
+        expect(response.status).toEqual(401);
+      })
+    done();
+  })
+  it("Should not be able to save a deliver with invalid id", async (done) => {
+    await supertest(app)
+      .post('/newdeliver')
+      .set("Authorization", driverId)
+      .send(data.Deliver)
+      .expect((response) => {
+        expect(response.status).toEqual(403);
+      })
+    done();
+  })
+  it("should be able to return a deliver by store", async (done) => {
     await supertest(app)
       .get(`/getdeliver/${data.Deliver.key}`)
       .set("Authorization", storeId)
@@ -201,7 +269,7 @@ describe('Deliver', () => {
       })
     done();
   })
-  it("Should return a deliver by driver", async (done) => {
+  it("should be able to return a deliver by driver", async (done) => {
     await supertest(app)
       .get(`/getdeliver`)
       .set("Authorization", driverId)
@@ -218,7 +286,7 @@ describe('Deliver', () => {
       })
     done();
   })
-  it("Should return all delivers", async (done) => {
+  it("should be able to return all delivers", async (done) => {
     await supertest(app)
       .get('/alldelivers')
       .set("Authorization", storeId)

@@ -22,7 +22,7 @@ class ListAllDeliversService {
   public async execute({ storeId }: IRequest): Promise<IResponse> {
     const store = await this.storesRepository.findOne(storeId)
     if (!store) {
-      throw new AppError("Store not found");
+      throw new AppError("Store not found", 403);
     }
     const delivers = await this.deliversRepository.findAll(store)
 

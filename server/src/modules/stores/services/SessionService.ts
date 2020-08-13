@@ -49,7 +49,7 @@ class SessionService {
       const token = this.signToken(driver.id);
       return { token, driver };
     }
-    throw new AppError("Invalid Credentials", 404);
+    throw new AppError("Invalid Credentials", 401);
   }
 }
 

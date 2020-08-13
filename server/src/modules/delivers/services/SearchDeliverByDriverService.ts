@@ -29,7 +29,7 @@ class SearchDeliverByDriverService {
   public async execute({ driverId, key }: IRequest): Promise<IResponse> {
     const driver = await this.driversRepository.findOne(driverId);
     if (!driver) {
-      throw new AppError("Id not found");
+      throw new AppError("Driver not found", 403);
     }
     const { store } = driver;
     const deliver = await this.deliversRepository.findOne({ key, store });

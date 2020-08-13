@@ -27,7 +27,7 @@ class CreateDeliverService {
   public async execute({ storeId, key, packages }: IRequest): Promise<IResponse> {
     const store = await this.storesRepository.findOne(storeId);
     if (!store) {
-      throw new AppError("Store not found");
+      throw new AppError("Store not found", 403);
     }
     await getConnection().transaction(async (transaction) => {
       const deliversRepository = new DeliversRepository(transaction);

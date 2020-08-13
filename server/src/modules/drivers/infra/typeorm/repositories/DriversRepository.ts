@@ -18,8 +18,7 @@ class DriversRepository implements IDriversRepository {
     if (driver) {
       return driver;
     }
-    const newDriver = new Driver()
-    newDriver.id = uuid();
+    const newDriver = this.repository.create();
     newDriver.name = name;
     newDriver.password = password;
     newDriver.store = store;

@@ -1,5 +1,4 @@
 import { Repository, getRepository } from "typeorm";
-import { uuid } from "uuidv4";
 import { Store } from "../entities/Store";
 import { Driver } from "../../../../drivers/infra/typeorm/entities/Driver";
 import IStoresRepository, { LoginDTO, StoreSampleDTO } from "modules/stores/repositories/IStoresRepository";
@@ -14,8 +13,7 @@ class StoresRepository implements IStoresRepository {
   async findOneOrRegister({ password, email, name }: StoreSampleDTO) {
     let store = await this.repository.findOne({ where: { name, password } })
     if (!store) {
-      const newStore = new Store()
-      newStore.id = uuid()
+      const newStore = this.repository.create();
       newStore.email = email
       newStore.name = name
       newStore.password = password

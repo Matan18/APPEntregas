@@ -3,9 +3,6 @@ import app from "../src/shared/infra/http/routes/control";
 import createConnection from "../src/shared/infra/typeorm/database/connections";
 import { Connection, getConnection } from "typeorm";
 
-let storeId = ""
-let driverId = ""
-let driverId2 = ""
 const data = {
   Store: {
     email: "loja@test.com",
@@ -45,18 +42,24 @@ const data = {
 let connection: Connection
 describe("Initial", () => {
   beforeAll(async () => {
-    connection = await createConnection("test-connection");
+    connection = await createConnection();
 
-    await connection.query('DROP TABLE IF EXISTS packages');
-    await connection.query('DROP TABLE IF EXISTS delivers');
-    await connection.query('DROP TABLE IF EXISTS drivers');
-    await connection.query('DROP TABLE IF EXISTS stores');
-    await connection.query('DROP TABLE IF EXISTS migrations');
+    await connection.query('drop table if exists packages;');
+    await connection.query('drop table if exists delivers;');
+    await connection.query('drop table if exists drivers;');
+    await connection.query('drop table if exists stores;');
+    await connection.query('drop table if exists migrations;');
 
     await connection.runMigrations();
   })
   afterAll(async () => {
     const mainConnection = getConnection();
+
+    await connection.query('drop table if exists packages;');
+    await connection.query('drop table if exists delivers;');
+    await connection.query('drop table if exists drivers;');
+    await connection.query('drop table if exists stores;');
+    await connection.query('drop table if exists migrations;');
 
     await connection.close();
     await mainConnection.close();
@@ -66,10 +69,17 @@ describe("Initial", () => {
 describe("Store", () => {
   beforeAll(async () => {
     connection = await createConnection();
+
     await connection.runMigrations();
   })
   afterAll(async () => {
     const mainConnection = getConnection();
+
+    await connection.query('drop table if exists packages;');
+    await connection.query('drop table if exists delivers;');
+    await connection.query('drop table if exists drivers;');
+    await connection.query('drop table if exists stores;');
+    await connection.query('drop table if exists migrations;');
 
     await connection.close();
     await mainConnection.close();
@@ -103,7 +113,6 @@ describe("Store", () => {
           name: data.Store.name,
         })
         expect(response.body).toHaveProperty('token');
-        storeId = `Baerer ${response.body.token}`;
       })
     done();
   })
@@ -135,11 +144,22 @@ describe("Store", () => {
 describe('Driver', () => {
   beforeAll(async () => {
     connection = await createConnection();
+
     await connection.runMigrations();
 
+    await supertest(app)
+      .post('/register')
+      .send({ ...data.Store, ...data.Driver })
+      .set('Accept', 'application/json')
   })
   afterAll(async () => {
     const mainConnection = getConnection();
+
+    await connection.query('drop table if exists packages;');
+    await connection.query('drop table if exists delivers;');
+    await connection.query('drop table if exists drivers;');
+    await connection.query('drop table if exists stores;');
+    await connection.query('drop table if exists migrations;');
 
     await connection.close();
     await mainConnection.close();
@@ -154,7 +174,6 @@ describe('Driver', () => {
           name: data.Driver.user,
         })
         expect(response.body).toHaveProperty('token');
-        driverId = `Baerer ${response.body.token}`;
       })
     done();
   })
@@ -183,6 +202,12 @@ describe('Driver', () => {
     done();
   })
   it("should be able to register a new Driver by a Store", async (done) => {
+    const firstResponse = await supertest(app)
+      .post('/login')
+      .send({ name: data.Store.name, password: data.Store.password })
+      .set('Accept', 'application/json');
+    const storeId = `Baerer ${firstResponse.body.token}`;
+
     await supertest(app)
       .post('/newdriver')
       .set("Authorization", storeId)
@@ -197,6 +222,13 @@ describe('Driver', () => {
     done();
   })
   it("Should be able to return a list of Drivers from a Store", async (done) => {
+    const firstResponse = await supertest(app)
+      .post('/login')
+      .send({ name: data.Store.name, password: data.Store.password })
+      .set('Accept', 'application/json');
+
+    const storeId = `Baerer ${firstResponse.body.token}`;
+
     await supertest(app)
       .get('/alldrivers')
       .set("Authorization", storeId)
@@ -212,15 +244,31 @@ describe('Driver', () => {
 describe('Deliver', () => {
   beforeAll(async () => {
     connection = await createConnection();
+    await connection.runMigrations();
 
+    await supertest(app)
+      .post('/register')
+      .send({ ...data.Store, ...data.Driver })
+      .set('Accept', 'application/json')
   })
   afterAll(async () => {
     const mainConnection = getConnection();
+
+    await connection.query('drop table if exists packages;');
+    await connection.query('drop table if exists delivers;');
+    await connection.query('drop table if exists drivers;');
+    await connection.query('drop table if exists stores;');
+    await connection.query('drop table if exists migrations;');
 
     await connection.close();
     await mainConnection.close();
   })
   it("should be able to register a deliver", async (done) => {
+    const firstResponse = await supertest(app)
+      .post('/login')
+      .send({ name: data.Store.name, password: data.Store.password })
+      .set('Accept', 'application/json');
+    const storeId = `Baerer ${firstResponse.body.token}`;
     await supertest(app)
       .post('/newdeliver')
       .set("Authorization", storeId)
@@ -249,6 +297,11 @@ describe('Deliver', () => {
     done();
   })
   it("Should not be able to save a deliver with invalid id", async (done) => {
+    const firstResponse = await supertest(app)
+      .post('/login')
+      .set('Accept', 'application/json')
+      .send({ name: data.Driver.user, password: data.Driver.userPassword })
+    const driverId = `Baerer ${firstResponse.body.token}`;
     await supertest(app)
       .post('/newdeliver')
       .set("Authorization", driverId)
@@ -259,6 +312,11 @@ describe('Deliver', () => {
     done();
   })
   it("should be able to return a deliver by store", async (done) => {
+    const firstResponse = await supertest(app)
+      .post('/login')
+      .send({ name: data.Store.name, password: data.Store.password })
+      .set('Accept', 'application/json');
+    const storeId = `Baerer ${firstResponse.body.token}`;
     await supertest(app)
       .get(`/getdeliver/${data.Deliver.key}`)
       .set("Authorization", storeId)
@@ -270,6 +328,11 @@ describe('Deliver', () => {
     done();
   })
   it("should be able to return a deliver by driver", async (done) => {
+    const secondResponse = await supertest(app)
+      .post('/login')
+      .set('Accept', 'application/json')
+      .send({ name: data.Driver.user, password: data.Driver.userPassword })
+    const driverId = `Baerer ${secondResponse.body.token}`;
     await supertest(app)
       .get(`/getdeliver`)
       .set("Authorization", driverId)
@@ -287,6 +350,12 @@ describe('Deliver', () => {
     done();
   })
   it("should be able to return all delivers", async (done) => {
+    const firstResponse = await supertest(app)
+      .post('/login')
+      .send({ name: data.Store.name, password: data.Store.password })
+      .set('Accept', 'application/json');
+    const storeId = `Baerer ${firstResponse.body.token}`;
+
     await supertest(app)
       .get('/alldelivers')
       .set("Authorization", storeId)

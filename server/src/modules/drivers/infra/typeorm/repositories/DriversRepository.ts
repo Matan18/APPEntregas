@@ -27,8 +27,8 @@ class DriversRepository implements IDriversRepository {
     driver = await this.repository.save(newDriver)
     return driver;
   }
-  async login({ name, password }: LoginDTO) {
-    const driver = await this.repository.findOne({ where: { name, password } })
+  async login({ name }: LoginDTO) {
+    const driver = await this.repository.findOne({ where: { name } })
     return driver;
   }
   async findAll(store: Store) {

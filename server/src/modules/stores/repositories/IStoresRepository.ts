@@ -7,7 +7,6 @@ export interface StoreSampleDTO {
   password: string;
 }
 export interface LoginDTO {
-  password: string;
   name: string;
 }
 

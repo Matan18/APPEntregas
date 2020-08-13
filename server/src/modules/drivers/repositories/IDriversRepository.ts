@@ -7,7 +7,6 @@ export interface DriverSampleDTO {
   store: Store;
 }
 export interface LoginDTO {
-  password: string;
   name: string;
 }
 

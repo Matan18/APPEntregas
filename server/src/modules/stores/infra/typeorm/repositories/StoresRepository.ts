@@ -22,11 +22,11 @@ class StoresRepository implements IStoresRepository {
     }
     return store;
   }
-  async login({ name, password }: LoginDTO) {
+  async login({ name }: LoginDTO) {
     const store = await this.repository.findOne({
       where:
-        [{ name, password },
-        { email: name, password }]
+        [{ name },
+        { email: name, }]
     })
     return store;
   }

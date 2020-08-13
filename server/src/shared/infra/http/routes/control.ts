@@ -4,6 +4,7 @@ import 'express-async-errors';
 import DeliverController from "../../../../modules/delivers/infra/http/controllers/DeliverController";
 import DriverController from "../../../../modules/drivers/infra/http/controllers/DriverController";
 import StoreController from "../../../../modules/stores/infra/http/controllers/StoreController";
+import "../../../providers"
 import ensureAuthenticated from "../middleware/ensureAuthenticated";
 import AppError from "../../../errors/AppError";
 

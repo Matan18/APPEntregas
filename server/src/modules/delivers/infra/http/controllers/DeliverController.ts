@@ -18,8 +18,10 @@ class DeliverController {
   }
   async index(request: Request, response: Response) {
     const storeId = request.user.id;
+
     const listAllDelivers = new ListAllDeliversService();
     const { delivers } = await listAllDelivers.execute({ storeId });
+
     response.status(200)
     return response.json({ delivers })
   }
@@ -39,7 +41,6 @@ class DeliverController {
       const driverId = request.user.id;
 
       const searchFromDriver = new SearchDeliverByDriverService();
-
       const { deliver } = await searchFromDriver.execute({ driverId, key: key.toString() });
 
       response.status(200)

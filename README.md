@@ -1,6 +1,4 @@
-# Awesome Project Build with TypeORM
-
-## APP para rota de entregas
+# API para rota de entregas
 
 ### Inicialização
 

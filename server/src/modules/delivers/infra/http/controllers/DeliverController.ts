@@ -36,19 +36,14 @@ class DeliverController {
     return response.json({ deliver })
   }
   async searchQuery(request: Request, response: Response) {
-    try {
-      const { key } = request.query;
-      const driverId = request.user.id;
+    const { key } = request.query;
+    const driverId = request.user.id;
 
-      const searchFromDriver = new SearchDeliverByDriverService();
-      const { deliver } = await searchFromDriver.execute({ driverId, key: key.toString() });
+    const searchFromDriver = new SearchDeliverByDriverService();
+    const { deliver } = await searchFromDriver.execute({ driverId, key: key.toString() });
 
-      response.status(200)
-      return response.json({ deliver })
-    } catch (err) {
-      console.log(err)
-      return response.status(500).json(err)
-    }
+    response.status(200)
+    return response.json({ deliver })
   }
 }
 

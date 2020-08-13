@@ -1,6 +1,6 @@
 import supertest from "supertest";
 import app from "../src/shared/infra/http/routes/control";
-import createConnection from "../src/shared/database/connections";
+import createConnection from "../src/shared/infra/typeorm/database/connections";
 import { Connection, getConnection } from "typeorm";
 
 let storeId = ""

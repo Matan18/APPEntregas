@@ -27,6 +27,7 @@ class CreateStoreAndDriverService {
   }
   public async execute({ name, email, password, user, userPassword }: IRequest): Promise<IResponse> {
 
+
     const store = await this.storesRepository.findOneOrRegister({ name, email, password });
     const driver = await this.driversRepository.findOneOrRegister({ name: user, password: userPassword, store });
 

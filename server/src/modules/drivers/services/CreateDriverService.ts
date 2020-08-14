@@ -27,6 +27,7 @@ class CreateDriverService {
       throw new AppError("Store not found", 403);
     }
     const driver = await this.driversRepository.findOneOrRegister({ password, name, store: store });
+    delete driver.password;
     return { driver };
   }
 }

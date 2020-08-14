@@ -25,8 +25,12 @@ class ListAllDriversFromStoreService {
     if (!store) {
       throw new AppError("Store not found", 403);
     }
-    const drivers = await this.driversRepository.findAll(store);
+    const driversList = await this.driversRepository.findAll(store);
 
+    const drivers = driversList.map(driver => {
+      delete driver.password;
+      return driver;
+    });
     return { drivers };
   }
 }

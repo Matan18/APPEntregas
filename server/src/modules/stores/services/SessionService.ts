@@ -50,6 +50,7 @@ class SessionService {
 
 
         const token = this.signToken(store.id);
+        delete store.password;
         return { token, store };
       }
     }
@@ -58,6 +59,8 @@ class SessionService {
       if (await this.hashProvider.compareHash(password, driver.password)) {
 
         const token = this.signToken(driver.id);
+        delete driver.password;
+
         return { token, driver };
       }
     }

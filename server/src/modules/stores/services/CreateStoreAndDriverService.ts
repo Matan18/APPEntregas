@@ -39,6 +39,8 @@ class CreateStoreAndDriverService {
     const store = await this.storesRepository.findOneOrRegister({ name, email, password: hashPassword });
     const driver = await this.driversRepository.findOneOrRegister({ name: user, password: hashUserPassword, store });
 
+    delete store.password;
+    delete driver.password;
     return { store, driver };
   }
 }

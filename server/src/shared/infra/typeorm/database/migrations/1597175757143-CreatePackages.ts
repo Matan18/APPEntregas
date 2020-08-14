@@ -20,13 +20,13 @@ export class CreatePackages1597175757143 implements MigrationInterface {
         },
         {
           name: 'latitude',
-          type: 'decimal',
+          type: 'real',
           scale: 7,
           isNullable: false,
         },
         {
           name: 'longitude',
-          type: 'decimal',
+          type: 'real',
           scale: 7,
           isNullable: false,
         },
@@ -46,7 +46,7 @@ export class CreatePackages1597175757143 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropForeignKey('packages', 'PakcagesDeliver');
+    await queryRunner.dropForeignKey('packages', 'PackagesDeliver');
     await queryRunner.dropTable('packages');
   }
 

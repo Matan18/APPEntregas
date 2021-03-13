@@ -27,7 +27,7 @@ Para poder rodar a aplicação, é necessário:
 * (Opcional) ter instalado o Yarn;
 * Ir nas pastas [mobile](https://github.com/Matan18/APPEntregas/tree/master/mobile) e [server](https://github.com/Matan18/APPEntregas/tree/master/server) e rodar o comando `yarn` ou `npm install` para instalar as dependências em cada pasta;
 * Para o backend:
-  * Ter funcionando um banco de dados PostgreSQL e ajustar as configurações dos bancos de testes e de desenvolvimento no arquivo [ormconfig.json](https://github.com/Matan18/APPEntregas/blob/master/server/ormconfig.json) e no [arquivo de conexção com o banco de dados](https://github.com/Matan18/APPEntregas/blob/master/server/src/shared/database/connections.ts);
+  * Ter funcionando um banco de dados PostgreSQL e ajustar as configurações dos bancos de testes e de desenvolvimento no arquivo [ormconfig.json](https://github.com/Matan18/APPEntregas/blob/master/server/ormconfig.json) e no [arquivo de conexção com o banco de dados](https://github.com/Matan18/APPEntregas/blob/master/server/src/shared/infra/typeorm/database/connections.ts);
 
   * O comando `yarn test` ou `npm run test` dentro da pasta server deve iniciar os teste de integração para ver se as funcionalidades da aplicação corretas;
   * O comando `yarn typeorm migration:run` ou `npm run typeorm migration:run` deve fazer a atualização das tabelas no banco de dados;

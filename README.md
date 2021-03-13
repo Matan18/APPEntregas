@@ -32,7 +32,6 @@ Para poder rodar a aplicação, é necessário:
 
   * O comando `yarn test` ou `npm run test` dentro da pasta server deve iniciar os teste de integração para ver se as funcionalidades da aplicação corretas;
   * O comando `yarn typeorm migration:run` ou `npm run typeorm migration:run` deve fazer a atualização das tabelas no banco de dados;
-  * O comando `yarn start` ou `npm run start` dentro da pasta server deve iniciar o programa de funcionamento da API;
 * Para o mobile:
   * Altere a url da [api](https://github.com/Matan18/APPEntregas/blob/master/mobile/src/services/api.ts) de acordo com o IP da máquina que está rodando o backend;
   * Na Google Cloud Platform, ter configurado as seguintes APIs do Google Maps:
@@ -49,9 +48,10 @@ Para poder rodar a aplicação, é necessário:
     ```
    * Crie um arquivo `./src/services/Api.key.ts` e adicione a mesma chave de autorização:
    
-  ```js
-  export const ApiKey = 'ATUALIZE_O_CODIGO_AQUI';
-  ```
+    ```js
+    export const ApiKey = 'ATUALIZE_O_CODIGO_AQUI';
+    ```
+* O comando `yarn start` ou `npm run start` dentro da pasta server e dentro da pasta mobile deve iniciar os programas da API Json e do aplicativo respectivamente;
 
 # API blueprint
 

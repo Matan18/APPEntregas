@@ -28,6 +28,7 @@ Para poder rodar a aplicação, é necessário:
 * Ir nas pastas [mobile](https://github.com/Matan18/APPEntregas/tree/master/mobile) e [server](https://github.com/Matan18/APPEntregas/tree/master/server) e rodar o comando `yarn` ou `npm install` para instalar as dependências em cada pasta;
 * Para o backend:
   * Ter funcionando um banco de dados PostgreSQL e ajustar as configurações dos bancos de testes e de desenvolvimento no arquivo [ormconfig.json](https://github.com/Matan18/APPEntregas/blob/master/server/ormconfig.json) e no [arquivo de conexção com o banco de dados](https://github.com/Matan18/APPEntregas/blob/master/server/src/shared/infra/typeorm/database/connections.ts);
+  * Se certificar que o postgres está com as configurações de criação de uuid, para isso rode direto no banco de dados o seguinte comando: `CREATE EXTENSION IF NOT EXISTS "uuid-ossp";`
 
   * O comando `yarn test` ou `npm run test` dentro da pasta server deve iniciar os teste de integração para ver se as funcionalidades da aplicação corretas;
   * O comando `yarn typeorm migration:run` ou `npm run typeorm migration:run` deve fazer a atualização das tabelas no banco de dados;

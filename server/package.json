@@ -30,7 +30,7 @@
     "reflect-metadata": "^0.1.10",
     "sqlite3": "^4.0.3",
     "tsyringe": "^4.3.0",
-    "typeorm": "0.2.25",
+    "typeorm": "0.3.14",
     "uuidv4": "^6.1.0"
   },
   "scripts": {
